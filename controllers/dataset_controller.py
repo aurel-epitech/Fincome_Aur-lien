@@ -1,8 +1,6 @@
 from models.dataset_model import Dataset
 from fastapi import HTTPException
 import os
-import matplotlib.pyplot as plt
-import seaborn as sns
 from fastapi.responses import FileResponse
 
 DATA_DIR = "datasets"
@@ -49,3 +47,14 @@ class DatasetController:
         if not dataset:
             raise HTTPException(status_code=404, detail="Dataset non trouvé")
         return dataset["df"].describe().to_dict()
+    
+    # Permet de créer un fichier excel 
+    @staticmethod
+    def export_to_excel(dataset_id):
+        dataset = Dataset.get_dataset(dataset_id)
+        if not dataset:
+            raise HTTPException(status_code=404, detail="Dataset non trouvé")
+
+        excel_path = os.path.join(DATA_DIR, f"{dataset_id}.xlsx")
+        dataset["df"].to_excel(excel_path, index=False)
+        return FileResponse(excel_path, filename=f"{dataset['filename'].split('.')[0]}.xlsx")

@@ -7,6 +7,7 @@ router = APIRouter()
 @router.get("/")
 def read_root():
     return DatasetController.hello()
+
 #  Permet de lister tous les datasets uploadés
 @router.get("/datasets/")
 def list_datasets():
@@ -30,3 +31,8 @@ def delete_dataset(dataset_id: str):
 @router.get("/datasets/{dataset_id}/stats/")
 def get_dataset_stats(dataset_id: str):
     return DatasetController.get_dataset_stats(dataset_id)
+
+# Permet de créer un fichier excel 
+@router.get("/datasets/{dataset_id}/excel/")
+def export_to_excel(dataset_id: str):
+    return DatasetController.export_to_excel(dataset_id)
