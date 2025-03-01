@@ -6,8 +6,10 @@ DATA_DIR = "datasets"
 os.makedirs(DATA_DIR, exist_ok=True)
 
 class Dataset:
+    # Création d'un dictionnaire pour enregistrer les fichiers CSV enregistré en mémoire
     datasets = {}
-
+    
+    # Permet d'enregistrer les CSV
     @classmethod
     def save_dataset(cls, file, filename):
         dataset_id = str(uuid.uuid4())
@@ -20,11 +22,13 @@ class Dataset:
         cls.datasets[dataset_id] = {"filename": filename, "df": df}
 
         return dataset_id
-
+    
+    # Permet de récupérer un dataset en mémoire à partir de son dataset_id
     @classmethod
     def get_dataset(cls, dataset_id):
         return cls.datasets.get(dataset_id, None)
-
+    
+    # Permet de supprimer un dataset à la fois en mémoire et du disque
     @classmethod
     def delete_dataset(cls, dataset_id):
         if dataset_id in cls.datasets:
